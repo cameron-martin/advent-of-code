@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
+import { minBy } from '../../lib/collections';
 
 (async () => {
     const input = (await fs.readFile(path.resolve(__dirname, 'input.txt'), { encoding: 'utf8' })).trim();
@@ -34,10 +35,6 @@ function removeType(type: string, polymer: string) {
     }
 
     return output;
-}
-
-function minBy<T>(array: T[], by: (elem: T) => number): T {
-    return array.reduce((currentLowest, elem) => by(elem) < by(currentLowest) ? elem : currentLowest);
 }
 
 function genCharArray(charA: string, charZ: string) {

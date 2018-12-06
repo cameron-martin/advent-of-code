@@ -1,4 +1,5 @@
 import { getInputLines } from "../../lib/user-input";
+import { maxBy } from "../../lib/collections";
 
 (async () => {
     const lines = await getInputLines(__dirname);
@@ -29,10 +30,6 @@ type LogEvent = {
     type: 'BEGINS_SHIFT';
     guardNumber: number;
 };
-
-function maxBy<T>(array: T[], by: (elem: T) => number): T {
-    return array.reduce((currentHighest, elem) => by(elem) > by(currentHighest) ? elem : currentHighest);
-}
 
 function logToGuards(logs: LogLine[]): Guard[] {
     const guards = new Map<number, Guard>();
