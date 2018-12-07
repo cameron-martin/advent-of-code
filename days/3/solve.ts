@@ -1,9 +1,5 @@
 import { getInputLines } from '../../lib/user-input';
-
-interface Coord {
-    x: number;
-    y: number;
-}
+import { Coord } from '../../lib/geometry';
 
 (async () => {
     const lines = await getInputLines(__dirname);
