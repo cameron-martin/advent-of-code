@@ -11,20 +11,16 @@ import { getInputLines } from "../../lib/user-input";
     const areas = new Map<Coord, Area>();
     for(const coord of coords) areas.set(coord, new Area());
 
-    for(let x = boundingBox.min.x; x <= boundingBox.max.x; x++) {
-        for(let y = boundingBox.min.y; y <= boundingBox.max.y; y++) {
-            const currentCoord = { x, y };
+    for(const currentCoord of boundingBox.cells()) {
+        const [nearest, secondNearest] = kNearestNeighbours(currentCoord, coords, 2, manhattanDistance);
 
-            const [nearest, secondNearest] = kNearestNeighbours(currentCoord, coords, 2, manhattanDistance);
+        if(nearest.distance !== secondNearest.distance) {
+            const area = areas.get(nearest.coord)!;
 
-            if(nearest.distance !== secondNearest.distance) {
-                const area = areas.get(nearest.coord)!;
+            area.size++;
 
-                area.size++;
-
-                if(isOnBoundary(currentCoord, boundingBox)) {
-                    area.onBoundary = true;
-                }
+            if(isOnBoundary(currentCoord, boundingBox)) {
+                area.onBoundary = true;
             }
         }
     }
@@ -37,14 +33,11 @@ import { getInputLines } from "../../lib/user-input";
 
     // Part 2
     let area = 0;
-    for(let x = boundingBox.min.x; x <= boundingBox.max.x; x++) {
-        for(let y = boundingBox.min.y; y <= boundingBox.max.y; y++) {
-            const currentCoord = { x, y };
-            const totalDistance = coords.map(coord => manhattanDistance(coord, currentCoord)).reduce((a, b) => a + b);
+    for(const currentCoord of boundingBox.cells()) {
+        const totalDistance = coords.map(coord => manhattanDistance(coord, currentCoord)).reduce((a, b) => a + b);
 
-            if(totalDistance < 10000) {
-                area++;
-            }
+        if(totalDistance < 10000) {
+            area++;
         }
     }
 
@@ -62,9 +55,16 @@ class Area {
     onBoundary = false;
 }
 
-interface Box {
-    min: Coord;
-    max: Coord;
+class Box {
+    constructor(public min: Coord, public max: Coord) {}
+
+    *cells(): IterableIterator<Coord> {
+        for(let x = this.min.x; x <= this.max.x; x++) {
+            for(let y = this.min.y; y <= this.max.y; y++) {
+                yield { x, y };
+            }
+        }
+    }
 }
 
 function isOnBoundary(coord: Coord, box: Box) {
@@ -72,17 +72,17 @@ function isOnBoundary(coord: Coord, box: Box) {
 }
 
 function computeBoundingBox(coords: Coord[]): Box {
-    return {
-        min: {
+    return new Box(
+        {
             x: minBy(coords, coord => coord.x).x,
             y: minBy(coords, coord => coord.y).y,
         },
 
-        max: {
+        {
             x: maxBy(coords, coord => coord.x).x,
             y: maxBy(coords, coord => coord.y).y,
         }
-    };
+    );
 }
 
 interface Neighbour {
