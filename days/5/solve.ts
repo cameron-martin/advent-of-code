@@ -1,9 +1,8 @@
-import fs from 'fs-extra';
-import path from 'path';
 import { minBy } from '../../lib/collections';
+import { getInput } from '../../lib/user-input';
 
 (async () => {
-    const input = (await fs.readFile(path.resolve(__dirname, 'input.txt'), { encoding: 'utf8' })).trim();
+    const input = (await getInput(__dirname)).trim();
 
     console.log(reactPolymer(input).length);
 
