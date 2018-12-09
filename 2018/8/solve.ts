@@ -1,4 +1,4 @@
-import { getInput } from '../../lib/user-input';
+import { getInput } from "../../lib/user-input";
 
 (async () => {
     const input = (await getInput(__dirname)).trim();

@@ -1,4 +1,4 @@
-import { getInputLines } from '../../lib/user-input';
+import { getInputLines } from "../../lib/user-input";
 
 (async function() {
     const lines = await getInputLines(__dirname);
