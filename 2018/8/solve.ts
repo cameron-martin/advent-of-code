@@ -1,4 +1,5 @@
 import { getInput } from "../../lib/user-input";
+import { sum } from "../../lib/arrays";
 
 (async () => {
     const input = (await getInput(__dirname)).trim();
@@ -57,10 +58,6 @@ function parse(tokens: number[]): ParseResult {
     };
 
     return {tree, rest};
-}
-
-function sum(numbers: number[]): number {
-    return numbers.reduce((a, b) => a + b, 0);
 }
 
 interface Tree {
