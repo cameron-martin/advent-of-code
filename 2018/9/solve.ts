@@ -4,11 +4,72 @@ class Player {
     score = 0;
 }
 
+class Marbles {
+    current: Marble;
+
+    constructor(marbleValue: number) {
+        const marble = new Marble(marbleValue);
+
+        marble.left = marble;
+        marble.right = marble;
+
+        this.current = marble;
+    }
+
+    /**
+     * Deletes the current marble and moves the current marble to the right
+     */
+    deleteCurrent() {
+        this.current.left.right = this.current.right;
+        this.current.right.left = this.current.left;
+
+        this.current = this.current.right;
+    }
+
+    /**
+     * Inserts a new marble to the right of the current marble
+     */
+    insertRight(value: number) {
+        const newMarble = new Marble(value);
+
+        newMarble.right = this.current.right;
+        newMarble.left = this.current;
+
+        this.current.right.left = newMarble;
+        this.current.right = newMarble;
+    }
+
+    moveLeft() {
+        this.rotate(-1);
+    }
+
+    moveRight() {
+        this.rotate(1);
+    }
+
+    /**
+     * Moves the current element clockwise by amount.
+     */
+    rotate(amount: number) {
+        const direction = amount < 0 ? 'left' : 'right';
+
+        for(let i = 0; i < Math.abs(amount); i++) {
+            this.current = this.current[direction];
+        }
+    }
+}
+
+class Marble {
+    constructor(public value: number) {}
+
+    left!: Marble;
+    right!: Marble;
+}
+
 class Game {
     public readonly players: Player[] = [];
     public currentPlayerIndex = 0;
-    public marbles = [0];
-    public currentMarbleIndex = 0;
+    public marbles = new Marbles(0);
     public lowestRemainingMarble = 1;
 
     constructor(public playerCount: number, public lastMarbleScore: number) {
@@ -25,9 +86,18 @@ class Game {
 
     public playTurn() {
         if(this.lowestRemainingMarble % 23 === 0) {
-            this.handleMultiple23();
+            this.marbles.rotate(-7);
+
+            this.currentPlayer.score += this.marbles.current.value + this.lowestRemainingMarble;
+
+            this.lowestRemainingMarble++;
+            this.marbles.deleteCurrent();
         } else {
-            this.insertMarble();
+            this.marbles.moveRight();
+            this.marbles.insertRight(this.lowestRemainingMarble);
+            this.marbles.moveRight();
+
+            this.lowestRemainingMarble++;
         }
 
         this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.playerCount;
@@ -37,43 +107,9 @@ class Game {
         return maxBy(this.players, player => player.score).score
     }
 
-    public printState() {
-        const marbles = this.marbles.map((marble, index) => this.currentMarbleIndex === index ? `(${marble})` : ` ${marble} `).join("");
-
-        return `P${this.currentPlayerIndex.toString().padStart(2, "0")} ${this.currentPlayer.score.toString().padStart(2, "0")}  - ${marbles}`;
-    }
-
-    private handleMultiple23() {
-        this.currentPlayer.score += this.lowestRemainingMarble;
-        this.lowestRemainingMarble++;
-
-        const marbleToRemoveIndex = mod(this.currentMarbleIndex - 7, this.marbles.length);
-
-        this.currentPlayer.score += this.marbles[marbleToRemoveIndex];
-        this.marbles.splice(marbleToRemoveIndex, 1);
-
-        this.currentMarbleIndex = marbleToRemoveIndex % this.marbles.length;
-    }
-
-    private insertMarble() {
-        const nextMarbleIndex = ((this.currentMarbleIndex + 1) % this.marbles.length) + 1;
-        this.marbles.splice(nextMarbleIndex, 0, this.lowestRemainingMarble);
-
-        this.lowestRemainingMarble++;
-        this.currentMarbleIndex = nextMarbleIndex;
-    }
-
-    get currentMarble() {
-        return this.marbles[this.currentMarbleIndex];
-    }
-
     get currentPlayer() {
         return this.players[this.currentPlayerIndex];
     }
-}
-
-function mod(n: number, m: number) {
-    return ((n % m) + m) % m;
 }
 
 (() => {
