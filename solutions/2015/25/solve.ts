@@ -1,10 +1,13 @@
-import { Coord } from "../../lib/geometry";
+import { Coord } from "../../../lib/geometry";
+import { puzzle } from "../../../lib/puzzle";
 
-(async () => {
+export default puzzle(async () => {
     const coord = { x: 2947, y: 3029 };
 
-    console.log(iterate(coordToIndex(coord), nextValue, 20151125));
-})();
+    return {
+        part1: iterate(coordToIndex(coord), nextValue, 20151125)
+    };
+});
 
 function nextValue(value: number): number {
     return (value * 252533) % 33554393;

@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Year 2015 Day 1 1`] = `
+Object {
+  "part1": 74,
+  "part2": 1795,
+}
+`;
+
+exports[`Year 2015 Day 25 1`] = `
+Object {
+  "part1": 19980801,
+}
+`;
+
+exports[`Year 2018 Day 1 1`] = `
+Object {
+  "part1": 595,
+  "part2": 80598,
+}
+`;
+
+exports[`Year 2018 Day 2 1`] = `
+Object {
+  "part1": 6888,
+  "part2": "icxjvbrobtunlelzpdmfkahgs",
+}
+`;
+
+exports[`Year 2018 Day 3 1`] = `
+Object {
+  "part1": 104241,
+  "part2": 806,
+}
+`;
+
+exports[`Year 2018 Day 4 1`] = `
+Object {
+  "part1": 19025,
+  "part2": 23776,
+}
+`;
+
+exports[`Year 2018 Day 5 1`] = `
+Object {
+  "part1": 11298,
+  "part2": 5148,
+}
+`;
+
+exports[`Year 2018 Day 6 1`] = `
+Object {
+  "part1": 4398,
+  "part2": 39560,
+}
+`;
+
+exports[`Year 2018 Day 7 1`] = `
+Object {
+  "part1": "GKCNPTVHIRYDUJMSXFBQLOAEWZ",
+  "part2": 1265,
+}
+`;
+
+exports[`Year 2018 Day 8 1`] = `
+Object {
+  "part1": 40908,
+  "part2": 25910,
+}
+`;
+
+exports[`Year 2018 Day 9 1`] = `
+Object {
+  "part1": 373597,
+  "part2": 2954067253,
+}
+`;

@@ -1,8 +1,16 @@
-import { getInputLines } from '../../lib/user-input';
+import { getInputLines } from '../../../lib/user-input';
+import { puzzle } from '../../../lib/puzzle';
 
-(async function() {
+export default puzzle(async function() {
     const lines = await getInputLines(__dirname);
 
+    return {
+        part1: solvePart1(lines),
+        part2: solvePart2(lines),
+    }
+});
+
+function solvePart1(lines: string[]) {
     let threeRepetitions = 0;
     let twoRepetitions = 0;
 
@@ -13,14 +21,18 @@ import { getInputLines } from '../../lib/user-input';
         if(id.hasRepetition(2)) twoRepetitions++;
     }
 
-    console.log(threeRepetitions * twoRepetitions);
+    return threeRepetitions * twoRepetitions;
+}
 
+function solvePart2(lines: string[]) {
     for(const [item1, item2] of allPairs(lines)) {
         if(differsBy1(item1, item2)) {
-            console.log(getSameCharacters(item1, item2));
+            return getSameCharacters(item1, item2);
         }
     }
-})();
+
+    throw new Error();
+}
 
 function* allPairs<T>(list: T[]): IterableIterator<[T, T]> {
     for(let i = 0; i < (list.length - 1); i++) {

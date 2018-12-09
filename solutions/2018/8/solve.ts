@@ -1,15 +1,18 @@
-import { getInput } from "../../lib/user-input";
-import { sum } from "../../lib/arrays";
+import { getInput } from "../../../lib/user-input";
+import { sum } from "../../../lib/arrays";
+import { puzzle } from "../../../lib/puzzle";
 
-(async () => {
+export default puzzle(async () => {
     const input = (await getInput(__dirname)).trim();
 
     const { tree, rest } = parse(tokenize(input));
     if(rest.length !== 0) throw new Error();
 
-    console.log(sumMetadata(tree));
-    console.log(computeTreeValue(tree));
-})();
+    return {
+        part1: sumMetadata(tree),
+        part2: computeTreeValue(tree),
+    }
+});
 
 function sumMetadata(tree: Tree): number {
     return sum(tree.metadata) + sum(tree.children.map(sumMetadata));

@@ -1,11 +1,14 @@
-import { getInput } from "../../lib/user-input";
+import { getInput } from "../../../lib/user-input";
+import { puzzle } from "../../../lib/puzzle";
 
-(async () => {
+export default puzzle(async () => {
     const input = await getInput(__dirname);
 
-    solvePart1(input);
-    solvePart2(input);
-})();
+    return {
+        part1: solvePart1(input),
+        part2: solvePart2(input),
+    }
+});
 
 function solvePart1(input: string) {
     let floor = 0;
@@ -19,7 +22,7 @@ function solvePart1(input: string) {
         else throw new Error();
     }
 
-    console.log(floor);
+    return floor;
 }
 
 function solvePart2(input: string) {
@@ -33,8 +36,9 @@ function solvePart2(input: string) {
         else throw new Error();
 
         if(floor === -1) {
-            console.log(i + 1);
-            break;
+            return i + 1;
         }
     }
+
+    throw new Error();
 }

@@ -1,7 +1,8 @@
-import { getInputLines } from '../../lib/user-input';
-import { Coord } from '../../lib/geometry';
+import { getInputLines } from '../../../lib/user-input';
+import { Coord } from '../../../lib/geometry';
+import { puzzle } from '../../../lib/puzzle';
 
-(async () => {
+export default puzzle(async () => {
     const lines = await getInputLines(__dirname);
 
     const fabricSections = lines.map(FabricSection.parse);
@@ -12,16 +13,25 @@ import { Coord } from '../../lib/geometry';
         fabric.addFabricSection(fabricSection);
     }
 
-    const answer = fabric.countPointsWithCoverage(coverage => coverage > 1);
+    return {
+        part1: solvePart1(fabric),
+        part2: solvePart2(fabric),
+    };
+});
 
-    console.log(answer);
+function solvePart1(fabric: Fabric) {
+    return fabric.countPointsWithCoverage(coverage => coverage > 1);
+}
 
-    for(const fabricSection of fabricSections) {
+function solvePart2(fabric: Fabric) {
+    for(const fabricSection of fabric.sections) {
         if(!fabric.isOverlapping(fabricSection)) {
-            console.log(fabricSection.id);
+            return fabricSection.id;
         }
     }
-})();
+
+    throw new Error();
+}
 
 class FabricSection {
     static parse(line: string): FabricSection {
@@ -56,6 +66,8 @@ class FabricSection {
 class Fabric {
     coverage = new Map<number, Map<number, number>>();
 
+    sections: FabricSection[] = [];
+
     private addCoveragePoint({x, y}: Coord): void {
         if(!this.coverage.has(x)) this.coverage.set(x, new Map());
 
@@ -67,6 +79,7 @@ class Fabric {
     }
 
     public addFabricSection(fabricSection: FabricSection): void {
+        this.sections.push(fabricSection);
         for(const coord of fabricSection.getCoords()) {
             this.addCoveragePoint(coord);
         }

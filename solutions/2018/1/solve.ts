@@ -1,29 +1,35 @@
-import { getInputLines } from "../../lib/user-input";
+import { getInputLines } from "../../../lib/user-input";
+import { puzzle } from "../../../lib/puzzle";
 
-(async function() {
+export default puzzle(async () => {
     const lines = await getInputLines(__dirname);
 
     const numbers = lines.map(line => Number.parseInt(line));
 
     // Part 1
-    const sum = numbers.reduce((acc, n) => acc + n, 0);
-    console.log(sum);
+    return {
+        part1: solvePart1(numbers),
+        part2: solvePart2(numbers),
+    };
+});
 
-    // Part 2
+function solvePart1(numbers: number[]) {
+    return numbers.reduce((acc, n) => acc + n, 0);
+}
+
+function solvePart2(numbers: number[]) {
     let acc = 0;
     let visitedNumbers = new Set<number>([acc]);
 
-    loop:
     while(true) {
         for(const number of numbers) {
             acc += number;
     
             if(visitedNumbers.has(acc)) {
-                console.log(acc);
-                break loop;
+                return acc;
             }
     
             visitedNumbers.add(acc);
         }
     }
-})();
+}

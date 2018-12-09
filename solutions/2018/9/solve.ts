@@ -1,4 +1,16 @@
-import { maxBy } from "../../lib/collections";
+import { maxBy } from "../../../lib/collections";
+import { puzzle } from "../../../lib/puzzle";
+
+export default puzzle(() => ({
+    part1: getHighestScore(new Game(486, 70833)),
+    part2: getHighestScore(new Game(486, 70833 * 100))
+}));
+
+function getHighestScore(game: Game) {
+    game.play();
+
+    return game.getHighestScore();
+}
 
 class Player {
     score = 0;
@@ -111,14 +123,3 @@ class Game {
         return this.players[this.currentPlayerIndex];
     }
 }
-
-(() => {
-    const game1 = new Game(486, 70833);
-
-    game1.play();
-    console.log(game1.getHighestScore());
-
-    const game2 = new Game(486, 70833 * 100);
-    game2.play();
-    console.log(game2.getHighestScore());
-})();

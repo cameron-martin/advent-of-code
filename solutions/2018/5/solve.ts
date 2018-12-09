@@ -1,17 +1,23 @@
-import { minBy } from '../../lib/collections';
-import { getInput } from '../../lib/user-input';
+import { minBy } from '../../../lib/collections';
+import { getInput } from '../../../lib/user-input';
+import { puzzle } from '../../../lib/puzzle';
 
-(async () => {
+export default puzzle(async () => {
     const input = (await getInput(__dirname)).trim();
 
-    console.log(reactPolymer(input).length);
+    return {
+        part1: reactPolymer(input).length,
+        part2: solvePart2(input),
+    };
+});
 
+function solvePart2(input: string) {
     const polymers = genCharArray('a', 'z').map(char => ({ removedType: char, polymer: reactPolymer(removeType(char, input)) }));
 
     const lowestLength = minBy(polymers, ({ polymer }) => polymer.length);
 
-    console.log(lowestLength.polymer.length);
-})();
+    return lowestLength.polymer.length;
+}
 
 function reactPolymer(polymer: string): string {
     let output = polymer;

@@ -1,7 +1,8 @@
-import { getInputLines } from "../../lib/user-input";
-import { maxBy } from "../../lib/collections";
+import { getInputLines } from "../../../lib/user-input";
+import { maxBy } from "../../../lib/collections";
+import { puzzle } from "../../../lib/puzzle";
 
-(async () => {
+export default puzzle(async () => {
     const lines = await getInputLines(__dirname);
 
     const inputs = lines.map(parseLine);
@@ -10,14 +11,23 @@ import { maxBy } from "../../lib/collections";
 
     const guards = logToGuards(inputs);
 
+    return {
+        part1: solvePart1(guards),
+        part2: solvePart2(guards),
+    };
+});
+
+function solvePart1(guards: Guard[]) {
     const guard = maxBy(guards, guard => guard.countSleepingMinutes());
 
-    console.log(guard.getMostSleepingMinute().minute * guard.id);
+    return guard.getMostSleepingMinute().minute * guard.id;
+}
 
+function solvePart2(guards: Guard[]) {
     const guardWithMaxSleepTimes = maxBy(guards, guard => guard.getMostSleepingMinute().sleepTimes);
-
-    console.log(guardWithMaxSleepTimes.id * guardWithMaxSleepTimes.getMostSleepingMinute().minute);
-})();
+    
+    return guardWithMaxSleepTimes.id * guardWithMaxSleepTimes.getMostSleepingMinute().minute;
+}
 
 interface LogLine {
     time: Date;
@@ -120,13 +130,9 @@ function parseLine(line: string): LogLine {
     const rawEvent = match[2];
 
     if(rawEvent === 'wakes up') {
-        event = {
-            type: 'WAKES_UP',
-        };
+        event = { type: 'WAKES_UP' };
     } else if(rawEvent === 'falls asleep') {
-        event = {
-            type: 'FALLS_ASLEEP',
-        };
+        event = { type: 'FALLS_ASLEEP' };
     } else {
         const match = rawEvent.match(/Guard #(\d+) begins shift/);
         if(!match) throw new Error('cannot find match');

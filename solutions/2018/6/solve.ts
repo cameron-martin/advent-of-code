@@ -1,13 +1,20 @@
-import { Coord, manhattanDistance } from "../../lib/geometry";
-import { maxBy, minBy } from "../../lib/collections";
-import { getInputLines } from "../../lib/user-input";
+import { Coord, manhattanDistance } from "../../../lib/geometry";
+import { maxBy, minBy } from "../../../lib/collections";
+import { getInputLines } from "../../../lib/user-input";
+import { puzzle } from "../../../lib/puzzle";
 
-(async () => {
+export default puzzle(async () => {
     const coords = (await getInputLines(__dirname)).map(parseInput);
 
     const boundingBox = computeBoundingBox(coords);
 
-    // Part 1
+    return {
+        part1: solvePart1(coords, boundingBox),
+        part2: solvePart2(coords, boundingBox),
+    }
+});
+
+function solvePart1(coords: Coord[], boundingBox: Box) {
     const areas = new Map<Coord, Area>();
     for(const coord of coords) areas.set(coord, new Area());
 
@@ -29,9 +36,10 @@ import { getInputLines } from "../../lib/user-input";
 
     const biggestArea = maxBy(finiteAreas, area => area.size);
 
-    console.log(biggestArea.size);
+    return biggestArea.size;
+}
 
-    // Part 2
+function solvePart2(coords: Coord[], boundingBox: Box) {
     let area = 0;
     for(const currentCoord of boundingBox.cells()) {
         const totalDistance = coords.map(coord => manhattanDistance(coord, currentCoord)).reduce((a, b) => a + b);
@@ -41,8 +49,8 @@ import { getInputLines } from "../../lib/user-input";
         }
     }
 
-    console.log(area);
-})();
+    return area;
+}
 
 function parseInput(input: string): Coord {
     const [x, y] = input.split(", ").map(n => Number.parseInt(n));

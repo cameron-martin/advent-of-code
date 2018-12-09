@@ -1,14 +1,17 @@
-import { getInputLines } from "../../lib/user-input";
-import { minBy } from "../../lib/collections";
+import { getInputLines } from "../../../lib/user-input";
+import { minBy } from "../../../lib/collections";
+import { puzzle } from "../../../lib/puzzle";
 
-(async () => {
+export default puzzle(async () => {
     const lines = await getInputLines(__dirname);
 
     const taskDepdendencies = lines.map(parseLine);
 
-    solvePart1(taskDepdendencies);
-    solvePart2(taskDepdendencies);
-})();
+    return {
+        part1: solvePart1(taskDepdendencies),
+        part2: solvePart2(taskDepdendencies),
+    };
+});
 
 function solvePart1(taskDepdendencies: TaskDependency[]) {
     const tasks1 = Tasks.fromDependencies(taskDepdendencies);
@@ -22,7 +25,7 @@ function solvePart1(taskDepdendencies: TaskDependency[]) {
         task.finish();
     }
 
-    console.log(sorted.map(task => task.id).join(""));
+    return sorted.map(task => task.id).join("");
 }
 
 function solvePart2(taskDepdendencies: TaskDependency[]) {
@@ -32,7 +35,7 @@ function solvePart2(taskDepdendencies: TaskDependency[]) {
 
     taskRunner.run();
 
-    console.log(taskRunner.time);
+    return taskRunner.time;
 }
 
 interface TaskDependency {
