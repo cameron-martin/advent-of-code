@@ -2,11 +2,12 @@ import { Coord, manhattanDistance } from "../../../lib/geometry";
 import { maxBy, minBy } from "../../../lib/collections";
 import { getInputLines } from "../../../lib/user-input";
 import { puzzle } from "../../../lib/puzzle";
+import { sum } from "../../../lib/arrays";
 
 export default puzzle(async () => {
     const coords = (await getInputLines(__dirname)).map(parseInput);
 
-    const boundingBox = computeBoundingBox(coords);
+    const boundingBox = Box.bounding(coords);
 
     return {
         part1: solvePart1(coords, boundingBox),
@@ -26,7 +27,7 @@ function solvePart1(coords: Coord[], boundingBox: Box) {
 
             area.size++;
 
-            if(isOnBoundary(currentCoord, boundingBox)) {
+            if(boundingBox.isOnBoundary(currentCoord)) {
                 area.onBoundary = true;
             }
         }
@@ -42,7 +43,7 @@ function solvePart1(coords: Coord[], boundingBox: Box) {
 function solvePart2(coords: Coord[], boundingBox: Box) {
     let area = 0;
     for(const currentCoord of boundingBox.cells()) {
-        const totalDistance = coords.map(coord => manhattanDistance(coord, currentCoord)).reduce((a, b) => a + b);
+        const totalDistance = sum(coords.map(coord => manhattanDistance(coord, currentCoord)));
 
         if(totalDistance < 10000) {
             area++;
@@ -64,6 +65,20 @@ class Area {
 }
 
 class Box {
+    static bounding(coords: Coord[]) {
+        return new Box(
+            {
+                x: minBy(coords, coord => coord.x).x,
+                y: minBy(coords, coord => coord.y).y,
+            },
+    
+            {
+                x: maxBy(coords, coord => coord.x).x,
+                y: maxBy(coords, coord => coord.y).y,
+            }
+        );
+    }
+
     constructor(public min: Coord, public max: Coord) {}
 
     *cells(): IterableIterator<Coord> {
@@ -73,24 +88,10 @@ class Box {
             }
         }
     }
-}
 
-function isOnBoundary(coord: Coord, box: Box) {
-    return [box.min.x, box.max.x].includes(coord.x) || [box.min.y, box.max.y].includes(coord.y);
-}
-
-function computeBoundingBox(coords: Coord[]): Box {
-    return new Box(
-        {
-            x: minBy(coords, coord => coord.x).x,
-            y: minBy(coords, coord => coord.y).y,
-        },
-
-        {
-            x: maxBy(coords, coord => coord.x).x,
-            y: maxBy(coords, coord => coord.y).y,
-        }
-    );
+    isOnBoundary(coord: Coord) {
+        return [this.min.x, this.max.x].includes(coord.x) || [this.min.y, this.max.y].includes(coord.y);
+    }
 }
 
 interface Neighbour {
