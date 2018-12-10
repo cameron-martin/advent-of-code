@@ -6,7 +6,6 @@ export default puzzle(async () => {
 
     const numbers = lines.map(line => Number.parseInt(line));
 
-    // Part 1
     return {
         part1: solvePart1(numbers),
         part2: solvePart2(numbers),
