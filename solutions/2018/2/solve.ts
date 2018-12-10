@@ -69,19 +69,11 @@ class Id {
 
     constructor(private id: string) {
         for(let letter of this.id) {
-            if(this.letterCounts.has(letter)) {
-                this.letterCounts.set(letter, this.letterCounts.get(letter)! + 1);
-            } else {
-                this.letterCounts.set(letter, 1);
-            }
+            this.letterCounts.set(letter, (this.letterCounts.get(letter) || 0) + 1);
         }
     }
 
     public hasRepetition(n: number) {
-        for(const [letter, count] of this.letterCounts) {
-            if(count === n) return true;
-        }
-
-        return false;
+        return Array.from(this.letterCounts.values()).some(count => count === n);
     }
 }

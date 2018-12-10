@@ -13,13 +13,13 @@ export default puzzle(async () => {
     };
 });
 
-function solvePart1(taskDepdendencies: TaskDependency[]) {
-    const tasks1 = Tasks.fromDependencies(taskDepdendencies);
+function solvePart1(taskDependencies: TaskDependency[]) {
+    const tasks = Tasks.fromDependencies(taskDependencies);
 
     const sorted = [];
 
-    while(!tasks1.allCompleted()) {
-        const task = tasks1.getNextAvailableTask()!;
+    while(!tasks.allCompleted()) {
+        const task = tasks.getNextAvailableTask()!;
 
         sorted.push(task);
         task.finish();
@@ -28,8 +28,8 @@ function solvePart1(taskDepdendencies: TaskDependency[]) {
     return sorted.map(task => task.id).join("");
 }
 
-function solvePart2(taskDepdendencies: TaskDependency[]) {
-    const tasks = Tasks.fromDependencies(taskDepdendencies);
+function solvePart2(taskDependencies: TaskDependency[]) {
+    const tasks = Tasks.fromDependencies(taskDependencies);
 
     const taskRunner = new TaskRunner(5, tasks);
 
