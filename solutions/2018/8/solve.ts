@@ -1,6 +1,6 @@
 import { getInput } from "../../../lib/user-input";
-import { sum } from "../../../lib/arrays";
 import { puzzle } from "../../../lib/puzzle";
+import { sum } from "../../../lib/collections";
 
 export default puzzle(async () => {
     const input = (await getInput(__dirname)).trim();

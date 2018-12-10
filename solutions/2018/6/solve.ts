@@ -1,8 +1,7 @@
 import { Coord, manhattanDistance } from "../../../lib/geometry";
-import { maxBy, minBy } from "../../../lib/collections";
+import { maxBy, minBy, sum } from "../../../lib/collections";
 import { getInputLines } from "../../../lib/user-input";
 import { puzzle } from "../../../lib/puzzle";
-import { sum } from "../../../lib/arrays";
 
 export default puzzle(async () => {
     const coords = (await getInputLines(__dirname)).map(parseInput);

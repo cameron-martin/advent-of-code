@@ -1,6 +1,6 @@
 import { getInputLines } from "../../../lib/user-input";
 import { puzzle } from "../../../lib/puzzle";
-import { sum } from "../../../lib/arrays";
+import { sum } from "../../../lib/collections";
 
 export default puzzle(async () => {
     const lines = await getInputLines(__dirname);
