@@ -1,5 +1,6 @@
 import { getInputLines } from "../../../lib/user-input";
 import { puzzle } from "../../../lib/puzzle";
+import { sum } from "../../../lib/arrays";
 
 export default puzzle(async () => {
     const lines = await getInputLines(__dirname);
@@ -13,7 +14,7 @@ export default puzzle(async () => {
 });
 
 function solvePart1(numbers: number[]) {
-    return numbers.reduce((acc, n) => acc + n, 0);
+    return sum(numbers);
 }
 
 function solvePart2(numbers: number[]) {
