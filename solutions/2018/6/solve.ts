@@ -1,4 +1,4 @@
-import { Coord, manhattanDistance } from "../../../lib/geometry";
+import { Coord, manhattanDistance, Box } from "../../../lib/geometry";
 import { maxBy, minBy, sum } from "../../../lib/collections";
 import { getInputLines } from "../../../lib/user-input";
 import { puzzle } from "../../../lib/puzzle";
@@ -55,42 +55,12 @@ function solvePart2(coords: Coord[], boundingBox: Box) {
 function parseInput(input: string): Coord {
     const [x, y] = input.split(", ").map(n => Number.parseInt(n));
 
-    return { x, y };
+    return new Coord(x, y);
 }
 
 class Area {
     size = 0;
     onBoundary = false;
-}
-
-class Box {
-    static bounding(coords: Coord[]) {
-        return new Box(
-            {
-                x: minBy(coords, coord => coord.x).x,
-                y: minBy(coords, coord => coord.y).y,
-            },
-    
-            {
-                x: maxBy(coords, coord => coord.x).x,
-                y: maxBy(coords, coord => coord.y).y,
-            }
-        );
-    }
-
-    constructor(public min: Coord, public max: Coord) {}
-
-    *cells(): IterableIterator<Coord> {
-        for(let x = this.min.x; x <= this.max.x; x++) {
-            for(let y = this.min.y; y <= this.max.y; y++) {
-                yield { x, y };
-            }
-        }
-    }
-
-    isOnBoundary(coord: Coord) {
-        return [this.min.x, this.max.x].includes(coord.x) || [this.min.y, this.max.y].includes(coord.y);
-    }
 }
 
 interface Neighbour {

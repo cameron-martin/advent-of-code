@@ -1,5 +1,3 @@
-import path from 'path';
-
 export interface PuzzleResult {
     part1: string | number;
     part2?: string | number;

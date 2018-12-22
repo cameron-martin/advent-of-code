@@ -41,14 +41,8 @@ class FabricSection {
 
         return new FabricSection(
             Number.parseInt(match[1]),
-            {
-                x: Number.parseInt(match[2]),
-                y: Number.parseInt(match[3]),
-            },
-            {
-                x: Number.parseInt(match[4]),
-                y: Number.parseInt(match[5]),
-            },
+            new Coord(Number.parseInt(match[2]), Number.parseInt(match[3])),
+            new Coord(Number.parseInt(match[4]), Number.parseInt(match[5])),
         );
     }
 
@@ -57,7 +51,7 @@ class FabricSection {
     public* getCoords(): IterableIterator<Coord> {
         for(let x = this.origin.x; x < this.origin.x + this.size.x; x++) {
             for(let y = this.origin.y; y < this.origin.y + this.size.y; y++) {
-                yield {x, y};
+                yield new Coord(x, y);
             }
         }
     }
