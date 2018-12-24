@@ -1,13 +1,13 @@
 import { minBy, maxBy } from "./collections";
-import { Hashable, Equatable } from "./hashtable";
+import { Hashable } from "./hashtable";
 
-export class Coord implements Hashable, Equatable {
+export class Coord implements Hashable {
     static origin = new Coord(0, 0);
 
     constructor(public x: number, public y: number) {}
 
     get hash() {
-        // TODO: This is very naive - reconsider this
+        // TODO: This has a lot of collisions - reconsider this if performance becomes an issue.
         return this.x + this.y;
     }
 

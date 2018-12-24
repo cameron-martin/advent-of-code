@@ -1,9 +1,14 @@
-export interface Hashable {
-    readonly hash: number;
-}
-
 export interface Equatable {
     equals(other: this): boolean;
+}
+
+export interface Hashable extends Equatable {
+    /**
+     * The following condition must hold true:
+     *
+     * `a.equals(b)` implies `a.hash === b.hash`
+     */
+    readonly hash: number;
 }
 
 interface Item<K, V> {
@@ -11,7 +16,7 @@ interface Item<K, V> {
     value: V;
 }
 
-export class HashTable<K extends Hashable & Equatable, V> {
+export class HashTable<K extends Hashable, V> {
     private buckets = new Map<number, Item<K, V>[]>();
 
     private getBucket(key: K) {

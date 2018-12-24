@@ -1,6 +1,6 @@
-import { Hashable, Equatable, HashTable } from "./hashtable";
+import { Hashable, HashTable } from "./hashtable";
 
-export function memoise<T extends Hashable & Equatable, R>(f: (arg: T) => R): (arg: T) => R {
+export function memoise<T extends Hashable, R>(f: (arg: T) => R): (arg: T) => R {
     const cache = new HashTable<T, R>();
 
     return function(arg) {
