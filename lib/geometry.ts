@@ -8,7 +8,7 @@ export class Coord implements Hashable {
 
     get hash() {
         // TODO: This has a lot of collisions - reconsider this if performance becomes an issue.
-        return this.x + this.y;
+        return this.x * 10000 + this.y;
     }
 
     equals(other: Coord) {
