@@ -79,5 +79,6 @@ Object {
 exports[`Year 2018 Day 22 1`] = `
 Object {
   "part1": 10115,
+  "part2": 990,
 }
 `;

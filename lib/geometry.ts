@@ -18,6 +18,10 @@ export class Coord implements Hashable {
     add(other: Coord) {
         return new Coord(this.x + other.x, this.y + other.y);
     }
+
+    toString(): string {
+        return `(${this.x}, ${this.y})`;
+    }
 }
 
 export class Box {
