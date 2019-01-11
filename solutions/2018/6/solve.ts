@@ -1,4 +1,4 @@
-import { Coord, manhattanDistance, Box } from "../../../lib/geometry";
+import { Vector2, manhattanDistance, Rectangle } from "../../../lib/geometry";
 import { maxBy, minBy, sum } from "../../../lib/collections";
 import { getInputLines } from "../../../lib/user-input";
 import { puzzle } from "../../../lib/puzzle";
@@ -6,7 +6,7 @@ import { puzzle } from "../../../lib/puzzle";
 export default puzzle(async () => {
     const coords = (await getInputLines(__dirname)).map(parseInput);
 
-    const boundingBox = Box.bounding(coords);
+    const boundingBox = Rectangle.bounding(coords);
 
     return {
         part1: solvePart1(coords, boundingBox),
@@ -14,19 +14,19 @@ export default puzzle(async () => {
     }
 });
 
-function solvePart1(coords: Coord[], boundingBox: Box) {
-    const areas = new Map<Coord, Area>();
+function solvePart1(coords: Vector2[], boundingBox: Rectangle) {
+    const areas = new Map<Vector2, Area>();
     for(const coord of coords) areas.set(coord, new Area());
 
-    for(const currentCoord of boundingBox.cells()) {
-        const [nearest, secondNearest] = kNearestNeighbours(currentCoord, coords, 2, manhattanDistance);
+    for(const currentVector2 of boundingBox.cells()) {
+        const [nearest, secondNearest] = kNearestNeighbours(currentVector2, coords, 2, manhattanDistance);
 
         if(nearest.distance !== secondNearest.distance) {
             const area = areas.get(nearest.coord)!;
 
             area.size++;
 
-            if(boundingBox.isOnBoundary(currentCoord)) {
+            if(boundingBox.isOnBoundary(currentVector2)) {
                 area.onBoundary = true;
             }
         }
@@ -39,10 +39,10 @@ function solvePart1(coords: Coord[], boundingBox: Box) {
     return biggestArea.size;
 }
 
-function solvePart2(coords: Coord[], boundingBox: Box) {
+function solvePart2(coords: Vector2[], boundingBox: Rectangle) {
     let area = 0;
-    for(const currentCoord of boundingBox.cells()) {
-        const totalDistance = sum(coords.map(coord => manhattanDistance(coord, currentCoord)));
+    for(const currentVector2 of boundingBox.cells()) {
+        const totalDistance = sum(coords.map(coord => manhattanDistance(coord, currentVector2)));
 
         if(totalDistance < 10000) {
             area++;
@@ -52,10 +52,10 @@ function solvePart2(coords: Coord[], boundingBox: Box) {
     return area;
 }
 
-function parseInput(input: string): Coord {
+function parseInput(input: string): Vector2 {
     const [x, y] = input.split(", ").map(n => Number.parseInt(n));
 
-    return new Coord(x, y);
+    return new Vector2(x, y);
 }
 
 class Area {
@@ -65,10 +65,10 @@ class Area {
 
 interface Neighbour {
     distance: number;
-    coord: Coord;
+    coord: Vector2;
 }
 
-function kNearestNeighbours(coord: Coord, coords: Coord[], k: number, calculateDistance: (coord1: Coord, coord2: Coord) => number): Neighbour[] {
+function kNearestNeighbours(coord: Vector2, coords: Vector2[], k: number, calculateDistance: (coord1: Vector2, coord2: Vector2) => number): Neighbour[] {
     // Ordered from lowest to highest distance
     const nearest: Neighbour[] = [];
 

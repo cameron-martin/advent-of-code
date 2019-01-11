@@ -1,12 +1,12 @@
 import { memoise } from "./memoisation";
-import { Coord } from "./geometry";
+import { Vector2 } from "./geometry";
 
-const fn = memoise((coord: Coord) => ({ coord }));
+const fn = memoise((coord: Vector2) => ({ coord }));
 
 test('memoises the return value', () => {
-    expect(fn(new Coord(0, 0))).toBe(fn(new Coord(0, 0)));
+    expect(fn(new Vector2(0, 0))).toBe(fn(new Vector2(0, 0)));
 });
 
 test('returns different values for different arguments', () => {
-    expect(fn(new Coord(0, 0))).not.toBe(fn(new Coord(0, 1)));
+    expect(fn(new Vector2(0, 0))).not.toBe(fn(new Vector2(0, 1)));
 });

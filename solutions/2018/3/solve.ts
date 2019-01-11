@@ -1,5 +1,5 @@
 import { getInputLines } from '../../../lib/user-input';
-import { Coord } from '../../../lib/geometry';
+import { Vector2 } from '../../../lib/geometry';
 import { puzzle } from '../../../lib/puzzle';
 
 export default puzzle(async () => {
@@ -41,17 +41,17 @@ class FabricSection {
 
         return new FabricSection(
             Number.parseInt(match[1]),
-            new Coord(Number.parseInt(match[2]), Number.parseInt(match[3])),
-            new Coord(Number.parseInt(match[4]), Number.parseInt(match[5])),
+            new Vector2(Number.parseInt(match[2]), Number.parseInt(match[3])),
+            new Vector2(Number.parseInt(match[4]), Number.parseInt(match[5])),
         );
     }
 
-    constructor(public id: number, public origin: Coord, public size: Coord) {}
+    constructor(public id: number, public origin: Vector2, public size: Vector2) {}
 
-    public* getCoords(): IterableIterator<Coord> {
+    public* getVector2s(): IterableIterator<Vector2> {
         for(let x = this.origin.x; x < this.origin.x + this.size.x; x++) {
             for(let y = this.origin.y; y < this.origin.y + this.size.y; y++) {
-                yield new Coord(x, y);
+                yield new Vector2(x, y);
             }
         }
     }
@@ -62,7 +62,7 @@ class Fabric {
 
     sections: FabricSection[] = [];
 
-    private addCoveragePoint({x, y}: Coord): void {
+    private addCoveragePoint({x, y}: Vector2): void {
         if(!this.coverage.has(x)) this.coverage.set(x, new Map());
 
         const innerMap = this.coverage.get(x)!;
@@ -74,13 +74,13 @@ class Fabric {
 
     public addFabricSection(fabricSection: FabricSection): void {
         this.sections.push(fabricSection);
-        for(const coord of fabricSection.getCoords()) {
+        for(const coord of fabricSection.getVector2s()) {
             this.addCoveragePoint(coord);
         }
     }
 
     public isOverlapping(fabricSection: FabricSection): boolean {
-        for(const coord of fabricSection.getCoords()) {
+        for(const coord of fabricSection.getVector2s()) {
             if(this.getCoverageForPoint(coord) > 1) {
                 return true;
             }
@@ -89,7 +89,7 @@ class Fabric {
         return false;
     }
 
-    public getCoverageForPoint({x, y}: Coord) {
+    public getCoverageForPoint({x, y}: Vector2) {
         const innerMap = this.coverage.get(x);
 
         if(!innerMap) return 0;

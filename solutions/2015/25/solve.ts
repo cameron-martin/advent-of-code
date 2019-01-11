@@ -1,8 +1,8 @@
-import { Coord } from "../../../lib/geometry";
+import { Vector2 } from "../../../lib/geometry";
 import { puzzle } from "../../../lib/puzzle";
 
 export default puzzle(async () => {
-    const coord = new Coord(2947, 3029);
+    const coord = new Vector2(2947, 3029);
 
     return {
         part1: iterate(coordToIndex(coord), nextValue, 20151125)
@@ -26,7 +26,7 @@ function iterate<T>(n: number, f: (val: T) => T, init: T) {
 /**
  * This is the cantor pairing function
  */
-function coordToIndex(coord: Coord) {
+function coordToIndex(coord: Vector2) {
     const x = coord.x - 1;
     const y = coord.y - 1;
 
