@@ -13,4 +13,4 @@ This prints out answers to both parts - one per line.
 
 I have optimised for maintainability first. Although this is not a useful property since they never have to be modified, usually this is not the case so I am using this as practise.
 
-Just for fun, I have used no libraries to solve these (except for testing, io and of course typescript - writing those is no fun). I have, however, extracted a shared library of code to use between tests.
+Just for fun, I have used no libraries to solve these (except for testing, io and of course typescript - writing those would be very time consuming). I have, however, extracted a shared library of code to use between puzzles.
