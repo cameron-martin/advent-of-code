@@ -25,5 +25,5 @@ export function cartesianProduct<T extends any[]>(...args:  Arrays<T>): T[] {
 
     const restProduct = cartesianProduct(...rest);
 
-    return init.flatMap(val => restProduct.map(rest => [val, ...rest]));
+    return init.flatMap(val => restProduct.map(rest => [val, ...rest]) as any);
 }
