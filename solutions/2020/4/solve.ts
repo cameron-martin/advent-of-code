@@ -1,4 +1,5 @@
 import { puzzle } from "../../../lib/puzzle";
+import { subset } from "../../../lib/set";
 import { getInput } from "../../../lib/user-input";
 
 export default puzzle(async () => {
@@ -34,18 +35,6 @@ function parseInput(input: string): Passport[] {
 }
 
 const requiredFields = new Set(['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid']);
-
-function subset<T>(a: Set<T>, b: Set<T>) {
-    let isSubset = true;
-
-    a.forEach((elem) => {
-        if(!b.has(elem)) {
-            isSubset = false;
-        }
-    });
-
-    return isSubset;
-}
 
 function hasRequiredFields(passport: Passport) {
     let fieldKeys = new Set(passport.fields.map((field) => field.key));
