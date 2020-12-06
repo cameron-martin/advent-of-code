@@ -117,3 +117,9 @@ Object {
   "part2": 156,
 }
 `;
+
+exports[`Year 2020 Day 5 1`] = `
+Object {
+  "part1": 974,
+}
+`;

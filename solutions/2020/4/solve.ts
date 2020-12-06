@@ -1,4 +1,3 @@
-import { count } from "console";
 import { puzzle } from "../../../lib/puzzle";
 import { getInput } from "../../../lib/user-input";
 
