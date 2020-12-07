@@ -27,3 +27,13 @@ export function cartesianProduct<T extends any[]>(...args:  Arrays<T>): T[] {
 
     return init.flatMap(val => restProduct.map(rest => [val, ...rest]) as any);
 }
+
+export function keyBy<T>(array: T[], f: (x: T) => string): Record<string, T> {
+    const result: Record<string, T> = {};
+
+    array.forEach((item) => {
+        result[f(item)] = item;
+    });
+
+    return result;
+}
